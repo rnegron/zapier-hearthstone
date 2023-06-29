@@ -4,7 +4,8 @@ const perform = async (z, bundle) => {
     url: "https://us.api.blizzard.com/hearthstone/cards",
     params: {
       locale: bundle.inputData.locale,
-      name: bundle.inputData.name,
+      textFilter: bundle.inputData.textFilter,
+      class: bundle.inputData.class,
     },
   });
   // this should return an array of objects (but only the first will be used)
@@ -35,6 +36,22 @@ module.exports = {
       {
         key: "locale",
         required: false,
+        default: "en_US",
+        choices: {
+          "de_DE": "German",
+          "en_US": "American English",
+          "es_ES": "Spanish",
+          "es_MX": "Spanish (Mexico)",
+          "fr_FR": "French",
+          "it_IT": "Italian",
+          "ja_JP": "Japanese",
+          "ko_KR": "Korean",
+          "pl_PL": "Polish",
+          "pt_BR": "Portuguese (Brazil)",
+          "ru_RU": "Russian",
+          "th_TH": "Thai",
+          "zh_TW": "Chinese (Taiwan)"
+        },
         label: "Data Locale",
         helpText: "Return localized data in this locale.",
       },
