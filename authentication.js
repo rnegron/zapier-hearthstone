@@ -59,7 +59,7 @@ module.exports = {
     sessionConfig: { perform: getSessionKey },
 
     fields: [
-      { key: "clientId", label: "Client ID", required: true },
+      { key: "clientId", label: "Client ID", required: true, helpText: 'Visit https://develop.battle.net/documentation/guides/using-oauth/client-credentials-flow to learn more about how to obtain these values.' },
       {
         key: "clientSecret",
         label: "Client Secret",
@@ -79,7 +79,7 @@ module.exports = {
     // be `{{X}}`. This can also be a function that returns a label. That function has
     // the standard args `(z, bundle)` and data returned from the test can be accessed
     // in `bundle.inputData.X`.
-    connectionLabel: (z, bundle) => bundle.authData.clientId,
+    connectionLabel: (z, bundle) => `Client ID Last 4 Characters: ${bundle.authData.clientId.slice(-4)}`,
   },
   befores: [includeSessionKeyHeader],
   afters: [],

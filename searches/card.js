@@ -35,7 +35,7 @@ module.exports = {
 
   display: {
     label: "Find Card",
-    description: "Finds a card based on name.",
+    description: "Finds a card based on various filters.",
   },
 
   operation: {
@@ -73,8 +73,7 @@ module.exports = {
       },
       {
         key: "class",
-        required: true,
-        default: "neutral",
+        required: false,
         choices: {
           neutral: "Neutral",
           deathknight: "Death Knight",
