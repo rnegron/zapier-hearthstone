@@ -1,24 +1,37 @@
 "use strict";
 
-const test = (z, bundle) =>
-  z.request({
-    url: "https://us.api.blizzard.com/hearthstone/metadata?locale=en_US",
+const { BATTLE_NET_OAUTH_URL, HEARTHSTONE_API_URL } = require("./constants");
+
+const AUTHENTICATION_URL = `${BATTLE_NET_OAUTH_URL}/token`;
+
+const test = async (z, bundle) => {
+  const response = await z.request({
+    url: `${HEARTHSTONE_API_URL}/metadata/classes`,
+    params: { locale: "en_US" },
   });
 
+  return response;
+};
+
 const getSessionKey = async (z, bundle) => {
+  const encodedCredentials = Buffer.from(
+    `${bundle.authData.clientId}:${bundle.authData.clientSecret}`,
+    "utf8"
+  );
   const body = { grant_type: "client_credentials" };
 
   const headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    Authorization:
-      "Basic " +
-      Buffer.from(
-        bundle.authData.clientId + ":" + bundle.authData.clientSecret
-      ).toString("base64"),
+    "Content-Type": "application/x-www-form-urlencoded",
+    Authorization: "Basic " + encodedCredentials.toString("base64"),
   };
 
+  // Blizzard's OAuth API fails if you send an existing sessionKey when authenticating
+  if (bundle.authData && bundle.authData.sessionKey) {
+    delete bundle.authData.sessionKey;
+  }
+
   const response = await z.request({
-    url: "https://oauth.battle.net/token",
+    url: AUTHENTICATION_URL,
     method: "POST",
     headers,
     body,
@@ -42,8 +55,6 @@ const includeSessionKeyHeader = (request, z, bundle) => {
 
 module.exports = {
   config: {
-    // "session" auth exchanges user data for a different session token (that may be
-    // periodically refreshed")
     type: "session",
     sessionConfig: { perform: getSessionKey },
 
