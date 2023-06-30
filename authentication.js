@@ -67,18 +67,7 @@ module.exports = {
         type: "password",
       },
     ],
-
-    // The test method allows Zapier to verify that the credentials a user provides
-    // are valid. We'll execute this method whenever a user connects their account for
-    // the first time.
     test,
-
-    // This template string can access all the data returned from the auth test. If
-    // you return the test object, you'll access the returned data with a label like
-    // `{{json.X}}`. If you return `response.data` from your test, then your label can
-    // be `{{X}}`. This can also be a function that returns a label. That function has
-    // the standard args `(z, bundle)` and data returned from the test can be accessed
-    // in `bundle.inputData.X`.
     connectionLabel: (z, bundle) => `Client ID Last 4 Characters: ${bundle.authData.clientId.slice(-4)}`,
   },
   befores: [includeSessionKeyHeader],
