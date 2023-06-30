@@ -21,8 +21,11 @@ jobs:
       - name: Install System Dependencies
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends jq
 
-      - name: Install Zapier CLI
+      - name: Install Zapier CLI globally
         run: npm install --global zapier-platform-cli
+
+      - name: Install local npm dependencies
+        run: npm ci
 
       - name: Login to Zapier by writing the API Key to a file
         run: |
